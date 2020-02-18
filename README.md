@@ -2,14 +2,14 @@
 
 Библиотека для интеграции, реализующая в полном объеме все возможности API сервиса рассылки сообщений ["SMSPilot"](https://smspilot.ru)
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/pandait/smspilot-messenger-php-sdk/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/itpanda-llc/smspilot-messenger-php-sdk/blob/master/LICENSE.md)
 
 ## Разработка
 
 ![](img/___logo100x120.png)
 
-* [Страница](https://github.com/pandait)
-* [Другие проекты](https://github.com/pandait)
+* [Страница](https://github.com/itpanda-llc)
+* [Другие проекты](https://github.com/itpanda-llc)
 
 ## О проекте
 
@@ -39,7 +39,7 @@
 Вручную
 
 ```
-git clone https://github.com/pandait/smspilot-messenger-php-sdk
+git clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
 ```
 
 ## Примеры пользования
