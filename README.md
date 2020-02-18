@@ -2,7 +2,7 @@
 
 Библиотека для интеграции, реализующая в полном объеме все возможности API сервиса рассылки сообщений ["SMSPilot"](https://smspilot.ru)
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/itpanda-llc/smspilot-messenger-php-sdk/blob/master/LICENSE.md)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
 ## Разработка
 
