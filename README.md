@@ -6,14 +6,13 @@
 
 ## Разработка
 
-![](img/___logo100x120.png)
+![](___logo100x120.png)
 
 * [Страница](https://github.com/itpanda-llc)
-* [Другие проекты](https://github.com/itpanda-llc)
 
 ## О проекте
 
-![](img/logo2018_148x30.png)
+![](logo2018_148x30.png)
 
 * [Страница](https://smspilot.ru)
 * [Документация](http://www.smspilot.ru/apikey.php)
