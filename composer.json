@@ -3,7 +3,8 @@
     "description": "Library for integration with the SMSPilot messaging service",
     "type": "library",
     "keywords": [
-        "panda", "sms", "smspilot", "messenger", "php", "sdk", "api", "rest-api", "http-client", "integration"
+        "panda", "sms", "smspilot", "messenger", "php", "sdk",
+        "api", "rest-api", "http-client", "integration", "backend"
     ],
     "homepage": "https://github.com/itpanda-llc/smspilot-messenger-php-sdk",
     "license": "MIT",
@@ -11,7 +12,7 @@
         {
             "name": "itpanda-llc",
             "homepage": "https://github.com/itpanda-llc",
-            "role": "Developer"
+            "role": "developer"
         }
     ],
     "autoload": {

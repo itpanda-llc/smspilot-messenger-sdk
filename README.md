@@ -2,17 +2,17 @@
 
 Библиотека для интеграции, реализующая в полном объеме все возможности API сервиса рассылки сообщений ["SMSPilot"](https://smspilot.ru)
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 ## Разработка
 
-![](___logo100x120.png)
+[![](___logo100x120.png)](https://github.com/itpanda-llc)
 
 * [Страница](https://github.com/itpanda-llc)
 
 ## О проекте
 
-![](logo2018_148x30.png)
+[![](logo2018_148x30.png)](https://smspilot.ru)
 
 * [Страница](https://smspilot.ru)
 * [Документация](http://www.smspilot.ru/apikey.php)
@@ -38,13 +38,13 @@
 С использованием Composer
 
 ```
-composer require itpanda-llc/smspilot-messenger-php-sdk
+require itpanda-llc/smspilot-messenger-php-sdk
 ```
 
 С использованием Git
 
 ```
-git clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
+clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
 ```
 
 ## Примеры пользования
@@ -53,10 +53,10 @@ git clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
 
 ```php
 // После Composer-установки
-require_once './vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 // После Git-установки
-require_once './smspilot-messenger-php-sdk/autoload.php';
+require_once 'smspilot-messenger-php-sdk/autoload.php';
 ```
 
 Импортирование
