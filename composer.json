@@ -17,7 +17,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Panda\\SMSPilot\\MessengerSDK": "src"
+            "Panda\\SMSPilot\\MessengerSDK\\": "src"
         }
     }
 }
