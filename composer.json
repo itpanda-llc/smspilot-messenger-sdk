@@ -1,14 +1,13 @@
 {
-    "name": "itpanda-llc/smspilot-messenger-php-sdk",
-    "autoload": {
-        "psr-4": {
-            "Panda\\SMSPilot\\MessengerSDK\\": "src"
-        }
-    },
-    "repositories": [
-        {
-            "type":"git",
-            "url":"https://github.com/itpanda-llc/smspilot-messenger-php-sdk"
-        }
+	"repositories": [
+		{
+			"type":"vcs",
+			"url":"https://github.com/itpanda-llc/smspilot-messenger-php-sdk",
+			"autoload": {
+				"psr-4": {
+					"Panda\\SMSPilot\\MessengerSDK\\": "src"
+				}
+			}
+		}
     ]
 }
