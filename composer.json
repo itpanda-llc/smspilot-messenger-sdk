@@ -18,5 +18,10 @@
         "psr-4": {
             "Panda\\SMSPilot\\MessengerSDK\\": "src"
         }
-    }
+    },
+    "repositories":[
+        {
+            "type":"git",
+            "url":"https://github.com/itpanda-llc/smspilot-messenger-php-sdk"
+        },
 }
