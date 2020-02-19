@@ -22,7 +22,7 @@
     "repositories": [
         {
             "type":"git",
-            "url":"http://github.com/pqr/superlogger"
+            "url":"https://github.com/itpanda-llc/smspilot-messenger-php-sdk"
         }
     ]
 }
