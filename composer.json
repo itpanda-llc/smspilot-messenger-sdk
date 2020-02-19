@@ -1,7 +1,7 @@
 {
     "name": "itpanda-llc/smspilot-messenger-php-sdk",
     "description": "Library for integration with the SMSPilot messaging service",
-    "version": "stable",
+    "minimum-stability": "stable",
     "type": "library",
     "keywords": [
         "panda", "sms", "smspilot", "messenger", "php", "sdk", "api", "rest-api", "http-client", "integration"
