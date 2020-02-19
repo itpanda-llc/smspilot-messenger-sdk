@@ -35,7 +35,13 @@
 
 ## Установка
 
-Вручную
+С использованием Composer
+
+```
+composer require itpanda-llc/smspilot-messenger-php-sdk
+```
+
+С использованием Git
 
 ```
 git clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
@@ -46,8 +52,16 @@ git clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
 Подключение
 
 ```php
-require_once __DIR__ . '/smspilot-messenger-php-sdk/autoload.php';
+// После Composer-установки
+require_once './vendor/autoload.php';
 
+// После Git-установки
+require_once './smspilot-messenger-php-sdk/autoload.php';
+```
+
+Импортирование
+
+```php
 use Panda\SMSPilot\MessengerSDK\Pilot;
 use Panda\SMSPilot\MessengerSDK\Singleton;
 use Panda\SMSPilot\MessengerSDK\Massive;
