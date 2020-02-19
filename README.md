@@ -15,7 +15,7 @@
 [![](logo2018_148x30.png)](https://smspilot.ru)
 
 * [Страница](https://smspilot.ru)
-* [Документация](http://www.smspilot.ru/apikey.php)
+* [Документация](https://smspilot.ru/apikey.php)
 
 ## Возможности
 
