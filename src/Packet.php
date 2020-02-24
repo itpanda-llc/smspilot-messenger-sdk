@@ -30,22 +30,22 @@ class Packet extends Send implements Package
     protected const MESSAGE = 'text';
 
     /**
-     * @var string|null Имя отправителя
+     * @var string Имя отправителя
      */
     private $sender;
 
     /**
-     * @var string|null Время отправки
+     * @var string Время отправки
      */
     private $time;
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V2;
 
     /**
-     * Singleton constructor.
+     * Packet constructor.
      * @param string|null $sender Имя отправителя
      * @param string|null $time Время отправки
      */
@@ -58,9 +58,9 @@ class Packet extends Send implements Package
 
     /**
      * @param string $name Имя отправителя
-     * @return Packet
+     * @return Package
      */
-    public function setName(string $name): Packet
+    public function setName(string $name): Package
     {
         $this->sender = $name;
 
@@ -69,9 +69,9 @@ class Packet extends Send implements Package
 
     /**
      * @param string $time Время отправки
-     * @return Packet
+     * @return Package
      */
-    public function setTime(string $time): Packet
+    public function setTime(string $time): Package
     {
         $this->time = $time;
 
@@ -108,11 +108,9 @@ class Packet extends Send implements Package
     public function addMessageList(array $messageList): Packet
     {
         foreach ($messageList as $v) {
-            if ((!isset($v[0])) || (!isset($v[1]))) {
-                throw new ClientException(Message::PACKET_ERROR);
-            }
-
-            if ((!is_string($v[0])) || (!is_string($v[1]))) {
+            if ((!isset($v[0])) || (!is_string($v[0]))
+                || (!isset($v[1])) || (!is_string($v[1])))
+            {
                 throw new ClientException(Message::PACKET_ERROR);
             }
         }

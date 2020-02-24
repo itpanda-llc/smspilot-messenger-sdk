@@ -18,7 +18,7 @@ namespace Panda\SMSPilot\MessengerSDK;
 class Pilot extends Request
 {
     /**
-     * Наименование параметра "Имя пользователя"
+     * Наименование параметра "API-ключ"
      */
     private const API_KEY = 'apikey';
 

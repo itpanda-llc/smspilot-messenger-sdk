@@ -33,7 +33,7 @@ class Status extends Check implements Package
     private const PACKET_ID = 'server_packet_id';
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V2;
 

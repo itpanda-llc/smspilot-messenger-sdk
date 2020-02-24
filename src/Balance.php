@@ -38,7 +38,7 @@ class Balance extends Check implements Package, Param
     private const FORMAT = 'format';
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V1;
 

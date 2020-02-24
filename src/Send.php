@@ -44,19 +44,19 @@ abstract class Send implements Package
 
     /**
      * @param string $name Имя отправителя
-     * @return Send
+     * @return Package
      */
-    abstract public function setName(string $name): Send;
+    abstract public function setName(string $name): Package;
 
     /**
      * @param string $time Время отправки
-     * @return Send
+     * @return Package
      */
-    abstract public function setTime(string $time): Send;
+    abstract public function setTime(string $time): Package;
 
     /**
      * @param array $param Параметры посылки
-     * @return Send
+     * @return Package
      */
     public function addParam(array $param): Package
     {

@@ -28,12 +28,12 @@ class Inbound extends Check implements Package
     protected const INBOUND = 'inbound';
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V2;
 
     /**
-     * Sender constructor.
+     * Inbound constructor.
      * @param string $range Временная отметка
      */
     public function __construct(string $range = null)

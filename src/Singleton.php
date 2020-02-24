@@ -18,7 +18,7 @@ namespace Panda\SMSPilot\MessengerSDK;
 class Singleton extends Send implements Package
 {
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V1;
 
@@ -44,7 +44,7 @@ class Singleton extends Send implements Package
      * @param string $name Имя отправителя
      * @return Singleton
      */
-    public function setName(string $name): Singleton
+    public function setName(string $name): Package
     {
         $this->package[self::SENDER] = $name;
 
@@ -55,7 +55,7 @@ class Singleton extends Send implements Package
      * @param string $time Время отправки
      * @return Singleton
      */
-    public function setTime(string $time): Singleton
+    public function setTime(string $time): Package
     {
         $this->package[self::TIME] = $time;
 

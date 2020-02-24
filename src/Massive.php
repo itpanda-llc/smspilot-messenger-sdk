@@ -18,12 +18,12 @@ namespace Panda\SMSPilot\MessengerSDK;
 class Massive extends Send implements Package
 {
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V1;
 
     /**
-     * Singleton constructor.
+     * Massive constructor.
      * @param string $message Текст сообщения
      * @param string|null $sender Имя отправителя
      * @param string|null $time Время отправки
@@ -39,9 +39,9 @@ class Massive extends Send implements Package
 
     /**
      * @param string $name Имя отправителя
-     * @return Massive
+     * @return Package
      */
-    public function setName(string $name): Massive
+    public function setName(string $name): Package
     {
         $this->package[self::SENDER] = $name;
 
@@ -50,9 +50,9 @@ class Massive extends Send implements Package
 
     /**
      * @param string $time Время отправки
-     * @return Massive
+     * @return Package
      */
-    public function setTime(string $time): Massive
+    public function setTime(string $time): Package
     {
         $this->package[self::TIME] = $time;
 

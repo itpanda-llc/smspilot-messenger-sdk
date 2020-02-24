@@ -23,7 +23,7 @@ class Account extends Check implements Package
     private const FORMAT = 'format';
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V1;
 

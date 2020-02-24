@@ -23,17 +23,17 @@ class Template extends Check implements Package
     protected const TEMPLATE = 'add_template';
 
     /**
-     * Наименование параметра "Имя отправителя"
+     * Наименование параметра "Адрес для получения результата"
      */
     protected const CALLBACK = 'callback';
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V1;
 
     /**
-     * Sender constructor.
+     * Template constructor.
      * @param string $template Текст шаблона
      * @param string $callback Адрес для получения результата
      */

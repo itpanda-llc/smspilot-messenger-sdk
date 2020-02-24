@@ -19,5 +19,9 @@
         "psr-4": {
             "Panda\\SMSPilot\\MessengerSDK\\": "src"
         }
+    },
+    "require": {
+        "ext-json": "*",
+        "ext-curl": "*"
     }
 }

@@ -33,7 +33,7 @@ class Sender extends Check implements Package
     protected const CALLBACK = 'callback';
 
     /**
-     * @var array URL web-запроса
+     * @var string URL web-запроса
      */
     public $url = URL::HTTP_V1;
 
