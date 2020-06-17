@@ -1,12 +1,8 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
@@ -14,8 +10,9 @@ namespace Panda\SMSPilot\MessengerSDK;
 use Panda\SMSPilot\MessengerSDK\Exception\ClientException;
 
 /**
- * Class Packet Создание и формирование массовых персональных сообщений
+ * Class Packet
  * @package Panda\SMSPilot\MessengerSDK
+ * Создание и формирование массовых персональных сообщений (HTTP API v2)
  */
 class Packet extends Send implements Package
 {
@@ -40,7 +37,7 @@ class Packet extends Send implements Package
     private $time;
 
     /**
-     * @var string URL web-запроса
+     * @var string URL-адрес web-запроса
      */
     public $url = URL::HTTP_V2;
 
@@ -97,27 +94,6 @@ class Packet extends Send implements Package
 
         $this->package[self::PACKET][] = array_diff($item,
             [null]);
-
-        return $this;
-    }
-
-    /**
-     * @param array $messageList Список сообщений
-     * @return Packet
-     */
-    public function addMessageList(array $messageList): Packet
-    {
-        foreach ($messageList as $v) {
-            if ((!isset($v[0])) || (!is_string($v[0]))
-                || (!isset($v[1])) || (!is_string($v[1])))
-            {
-                throw new ClientException(Message::PACKET_ERROR);
-            }
-        }
-
-        foreach ($messageList as $v) {
-            $this->addMessage($v[0], $v[1], $v[2] ?? null, $v[3] ?? null);
-        }
 
         return $this;
     }

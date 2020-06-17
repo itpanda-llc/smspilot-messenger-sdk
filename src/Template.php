@@ -1,19 +1,16 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Template Формирование анти-спам шаблона на проверку
+ * Class Template
  * @package Panda\SMSPilot\MessengerSDK
+ * Формирование анти-спам шаблона на проверку (HTTP API v1)
  */
 class Template extends Check implements Package
 {
@@ -28,7 +25,7 @@ class Template extends Check implements Package
     protected const CALLBACK = 'callback';
 
     /**
-     * @var string URL web-запроса
+     * @var string URL-адрес web-запроса
      */
     public $url = URL::HTTP_V1;
 

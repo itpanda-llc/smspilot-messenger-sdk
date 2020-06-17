@@ -1,19 +1,16 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Status Получение статуса сообщений
+ * Class Status
  * @package Panda\SMSPilot\MessengerSDK
+ * Получение статуса сообщений (HTTP API v2)
  */
 class Status extends Check implements Package
 {
@@ -33,7 +30,7 @@ class Status extends Check implements Package
     private const PACKET_ID = 'server_packet_id';
 
     /**
-     * @var string URL web-запроса
+     * @var string URL-адрес web-запроса
      */
     public $url = URL::HTTP_V2;
 
@@ -67,17 +64,6 @@ class Status extends Check implements Package
 
         $this->package[self::SERVER][] =
             [self::SERVER_ID => $id];
-
-        return $this;
-    }
-
-    /**
-     * @param array $idList Список номеров сообщений
-     * @return Status
-     */
-    public function addMessageList(array $idList): Status
-    {
-        foreach ($idList as $v) $this->addMessage($v);
 
         return $this;
     }

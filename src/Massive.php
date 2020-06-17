@@ -1,24 +1,21 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Massive Создание и формирование параметров массового сообщения (рассылки)
+ * Class Massive
  * @package Panda\SMSPilot\MessengerSDK
+ * Создание и формирование параметров массового сообщения (рассылки) (HTTP API v1)
  */
 class Massive extends Send implements Package
 {
     /**
-     * @var string URL web-запроса
+     * @var string URL-адрес web-запроса
      */
     public $url = URL::HTTP_V1;
 
@@ -73,17 +70,6 @@ class Massive extends Send implements Package
 
             $this->package[self::RECIPIENT] = $recipients;
         }
-
-        return $this;
-    }
-
-    /**
-     * @param array $recipientList Список номеров получателей
-     * @return Massive
-     */
-    public function addRecipientList(array $recipientList): Massive
-    {
-        foreach ($recipientList as $v) $this->addRecipient($v);
 
         return $this;
     }

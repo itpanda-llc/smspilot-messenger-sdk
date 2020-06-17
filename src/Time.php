@@ -1,26 +1,23 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Time Время отправки (отложенная отправка)
+ * Class Time
  * @package Panda\SMSPilot\MessengerSDK
+ * Время отправки (отложенная отправка)
  */
 class Time implements Param
 {
     /**
      * Наименование параметра
      */
-    protected const PARAM_NAME = 'send_datetime';
+    private const PARAM_NAME = 'send_datetime';
 
     /**
      * @param string $param Значение параметра

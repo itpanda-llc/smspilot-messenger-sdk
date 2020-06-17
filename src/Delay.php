@@ -1,21 +1,18 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Delay Время отправки (отложенная отправка)
+ * Class Delay
  * @package Panda\SMSPilot\MessengerSDK
+ * Время отправки (отложенная отправка)
  */
-class Delay extends Time implements Param
+class Delay
 {
     /**
      * @param int $time Количество минут для задержки

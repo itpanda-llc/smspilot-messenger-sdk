@@ -1,19 +1,16 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Inbound Получение информации о входящих сообщениях
+ * Class Inbound
  * @package Panda\SMSPilot\MessengerSDK
+ * Получение информации о входящих сообщениях (HTTP API v2)
  */
 class Inbound extends Check implements Package
 {
@@ -28,7 +25,7 @@ class Inbound extends Check implements Package
     protected const INBOUND = 'inbound';
 
     /**
-     * @var string URL web-запроса
+     * @var string URL-адрес web-запроса
      */
     public $url = URL::HTTP_V2;
 

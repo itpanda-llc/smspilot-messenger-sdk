@@ -1,19 +1,16 @@
 <?php
 
 /**
- * Этот файл является частью репозитория
- * Panda/SMSPilot/MessengerSDK.
- *
- * Для получения полной информации об авторских правах
- * и лицензии, пожалуйста, просмотрите файл LICENSE,
- * который был распространен с этим исходным кодом.
+ * Файл из репозитория SMSPilot-Messenger-PHP-SDK
+ * @link https://github.com/itpanda-llc
  */
 
 namespace Panda\SMSPilot\MessengerSDK;
 
 /**
- * Class Range Время получения сообщений (временной диапазон для выбора входящих)
+ * Class Range
  * @package Panda\SMSPilot\MessengerSDK
+ * Время получения сообщений (временной диапазон для выбора входящих)
  */
 class Range implements Param
 {
@@ -26,6 +23,11 @@ class Range implements Param
      * Наименование параметра
      */
     private const PARAM_NAME = 'since';
+
+    /**
+     * Шаблон даты
+     */
+    private const DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @param string $param Значение параметра
@@ -42,7 +44,8 @@ class Range implements Param
      */
     public static function min(int $time): string
     {
-        return date('Y-m-d H:i:s', (string) (time() - (60 * $time)));
+        return date(self::DATE_FORMAT,
+            (string) (time() - (60 * $time)));
     }
 
     /**
@@ -51,7 +54,8 @@ class Range implements Param
      */
     public static function hour(int $time): string
     {
-        return date('Y-m-d H:i:s', (string) (time() - (3600 * $time)));
+        return date(self::DATE_FORMAT,
+            (string) (time() - (3600 * $time)));
     }
 
     /**
@@ -60,6 +64,7 @@ class Range implements Param
      */
     public static function day(int $time): string
     {
-        return date('Y-m-d H:i:s', (string) (time() - (86400 * $time)));
+        return date(self::DATE_FORMAT,
+            (string) (time() - (86400 * $time)));
     }
 }
