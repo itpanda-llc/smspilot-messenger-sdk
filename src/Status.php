@@ -2,91 +2,76 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+declare(strict_types=1);
+
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Status
- * @package Panda\SMSPilot\MessengerSDK
- * Получение статуса сообщений (HTTP API v2)
+ * @package Panda\SmsPilot\MessengerSdk
+ * Статусы сообщений (HTTP/API-2)
  */
-class Status extends Check implements Package
+class Status extends JsonTask
 {
     /**
-     * Наименование параметра "Сообщения"
+     * Наименование параметра "Список кодов сообщений"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    private const SERVER = 'check';
+    private const CHECK = 'check';
 
     /**
-     * Наименование параметра "Номер сообщения"
+     * Наименование параметра "Код сообщения"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
     private const SERVER_ID = 'server_id';
 
     /**
-     * Наименование параметра "Номер пакета сообщений"
+     * Наименование параметра "Код пакета"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    private const PACKET_ID = 'server_packet_id';
-
-    /**
-     * @var string URL-адрес web-запроса
-     */
-    public $url = URL::HTTP_V2;
+    private const SERVER_PACKET_ID = 'server_packet_id';
 
     /**
      * Status constructor.
-     * @param string|null $id Номер сообщения
+     * @param string|null $id Код сообщения
      */
     public function __construct(string $id = null)
     {
-        if (!is_null($id)) {
-            $this->package[self::SERVER][] =
-                [self::SERVER_ID => $id];
-        }
+        if (!is_null($id)) $this->addId($id);
     }
 
     /**
-     * @param string $id Номер сообщения
-     * @return Status
+     * @param string $id Код сообщения
+     * @return $this
      */
-    public function addMessage(string $id): Status
+    public function addId(string $id): self
     {
-        unset($this->package[self::PACKET_ID]);
+        $this->task[self::SERVER_PACKET_ID] = null;
 
-        if (!empty($this->package[self::SERVER])) {
-            if ($this->package[self::SERVER] === true) {
-                unset($this->package[self::SERVER]);
+        if (($this->task[self::CHECK] === true)
+            || (!isset($this->package[self::CHECK])))
+            $this->task[self::CHECK] = [];
 
-                $this->package[self::SERVER] = [];
-            }
-        }
-
-        $this->package[self::SERVER][] =
-            [self::SERVER_ID => $id];
+        $this->task[self::CHECK][] = [self::SERVER_ID => $id];
 
         return $this;
     }
 
     /**
-     * @param string $id Номер пакета сообщений
-     * @return Status
+     * @param string $packetId Код пакета
+     * @return $this
      */
-    public function addPacket(string $id): Status
+    public function setPacketId(string $packetId): self
     {
-        unset($this->package[self::SERVER]);
-        $this->package[self::SERVER] = true;
-
-        $this->package[self::PACKET_ID] = $id;
+        $this->task[self::CHECK] = true;
+        $this->task[self::SERVER_PACKET_ID] = $packetId;
 
         return $this;
-    }
-
-    /**
-     * @return string Параметры посылки
-     */
-    public function getParam(): string
-    {
-        return json_encode($this->package);
     }
 }

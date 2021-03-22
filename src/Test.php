@@ -2,39 +2,31 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Test
- * @package Panda\SMSPilot\MessengerSDK
- * Отправка без передачи оператору
+ * @package Panda\SmsPilot\MessengerSdk
+ * Обычная отправка / Без передачи оператору
  */
-class Test implements Param
+class Test
 {
     /**
-     * Без передачи оператору
-     */
-    public const TRUE = '1';
-
-    /**
      * Обычная отправка
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const FALSE = '0';
+    public const NO = '0';
 
     /**
-     * Наименование параметра
+     * Без передачи оператору (эмулятор)
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    private const PARAM_NAME = 'test';
-
-    /**
-     * @param string $param Значение параметра
-     * @return array Параметр
-     */
-    public static function get(string $param): array
-    {
-        return [self::PARAM_NAME => $param];
-    }
+    public const YES = '1';
 }

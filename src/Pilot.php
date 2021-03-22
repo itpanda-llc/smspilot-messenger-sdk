@@ -2,144 +2,208 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+declare(strict_types=1);
+
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Pilot
- * @package Panda\SMSPilot\MessengerSDK
- * Создание сервиса и аутентификация
+ * @package Panda\SmsPilot\MessengerSdk
+ * Формирование задачи / Выполнение запроса
  */
 class Pilot extends Request
 {
     /**
      * Наименование параметра "API-ключ"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
     private const API_KEY = 'apikey';
 
     /**
-     * @var array Параметры посылки
+     * Наименование параметра "Логин"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    private $package = [];
+    private const LOGIN = 'login';
+
+    /**
+     *
+     * Наименование параметра "Пароль"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
+     */
+    private const PASSWORD = 'password';
+
+    /**
+     * Наименование параметра "Адрес электронной почты (Отладка HTTP-запросов)"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
+     */
+    private const DEBUG = 'debug';
+
+    /**
+     * Наименование параметра "Реферер"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
+     */
+    private const R = 'r';
+
+    /**
+     * @var array Параметры задачи/запроса
+     */
+    private $task = [];
 
     /**
      * Pilot constructor.
-     * @param string $apiKey API-ключ
+     * @param string $reason API-ключ / Логин
+     * @param string|null $password Пароль
      */
-    public function __construct(string $apiKey)
+    public function __construct(string $reason,
+                                string $password = null)
     {
-        $this->package[self::API_KEY] = $apiKey;
+        $this->task[(is_null($password))
+            ? self::API_KEY
+            : self::LOGIN] = $reason;
+
+        $this->task[self::PASSWORD] = $password;
     }
 
     /**
-     * @param string|null $format Формат ответа
-     * @return string Результат web-запроса
+     * @param string $debug Адрес электронной почты (Отладка HTTP-запросов)
+     * @return $this
      */
-    public function getAccount(string $format = null): string
+    public function setDebug(string $debug): self
     {
-        $account = new Account($format);
+        $this->task[self::DEBUG] = $debug;
 
-        return $this->request($account);
+        return $this;
     }
 
     /**
-     * @param string|null $balance Единица измерения баланса аккаунта
-     * @param string|null $format Формат ответа
-     * @return string Результат web-запроса
+     * @param string $r Реферер
+     * @return $this
      */
-    public function getBalance(string $balance = null,
-                               string $format = null): string
+    public function setR(string $r): self
     {
-        $balance = new Balance($balance, $format);
+        $this->task[self::R] = $r;
 
-        return $this->request($balance);
+        return $this;
     }
 
     /**
-     * @param string $sender Имя отправителя
-     * @param string|null $callback Адрес для получения результата
-     * @param string|null $description Описание проекта
+     * @param string $send Текст сообщения
+     * @param string $to Номер мобильного телефона, или список номеров через запятую
+     * @param string|null $from Зарегистрированный отправитель
      * @return string Результат web-запроса
      */
-    public function getSender(string $sender,
-                              string $callback = null,
-                              string $description = null): string
+    public function sendSingleton(string $send,
+                                  string $to,
+                                  string $from = null): string
     {
-        $sender = new Sender ($sender, $callback);
-
-        if (!is_null($description)) {
-            $sender->setDescription($description);
-        }
-
-        return $this->request($sender);
+        return $this->request(new Singleton($send, $to, $from));
     }
 
     /**
-     * @param string|null $range Временная отметка
+     * @param string $text Текст соообщения
+     * @param string $to Телефонный номер абонента
+     * @param string|null $from Имя отправителя
      * @return string Результат web-запроса
      */
-    public function getInbound(string $range = null): string
+    public function sendPacket(string $text,
+                               string $to,
+                               string $from = null): string
     {
-        $inbound = new Inbound($range);
-
-        return $this->request($inbound);
+        return $this->request(new Packet($text, $to, $from));
     }
 
     /**
-     * @param string $message Номер сообщения
+     * @param string|null $balance Единица измерения
      * @return string Результат web-запроса
      */
-    public function getStatus(string $message): string
+    public function getBalance(string $balance = null): string
     {
-        $status = new Status($message);
-
-        return $this->request($status);
+        return $this->request(new Balance($balance));
     }
 
     /**
-     * @param string $message Текст сообщения
-     * @param string $recipient Номер получателя
-     * @param string|null $sender Имя отправителя
-     * @param string|null $time Время отправки
+     * @param string|null $balance Единица измерения
      * @return string Результат web-запроса
      */
-    public function newSingleton(string $message,
-                                  string $recipient,
-                                  string $sender = null,
-                                  string $time = null): string
+    public function getAccount(string $balance = null): string
     {
-        $singleton = new Singleton($message,
-            $recipient,
-            $sender,
-            $time);
-
-        return $this->request($singleton);
+        return $this->request(new Account($balance));
     }
 
     /**
-     * @param string $template Текст шаблона
-     * @param string $callback Адрес для получения результата
+     * @param string $id Код сообщения
      * @return string Результат web-запроса
      */
-    public function newTemplate(string $template,
-                                 string $callback = null): string
+    public function getStatusById(string $id): string
     {
-        $template = new Template ($template, $callback);
-
-        return $this->request($template);
+        return $this->request(new Status($id));
     }
 
     /**
-     * @param Package $package Посылка
+     * @param string $packetId Код пакета
      * @return string Результат web-запроса
      */
-    public function request(Package $package): string
+    public function getStatusByPacketId(string $packetId): string
     {
-        $package->addParam($this->package);
+        return $this->request((new Status)->setPacketId($packetId));
+    }
 
-        return $this->send($package->url,
-            $package->getParam());
+    /**
+     * @param string|null $inbound Дата/время с которого начинается выборка
+     * @return string Результат web-запроса
+     */
+    public function getInbound(string $inbound = null): string
+    {
+        return $this->request(new Inbound($inbound));
+    }
+
+    /**
+     * @param string|null $addSender Имя отправителя
+     * @param string|null $description Название проекта, адрес сайта, примеры сообщений
+     * @param string|null $callback Адрес для уведомления о результате проверки
+     * @return string Результат web-запроса
+     */
+    public function registerSender(string $addSender = null,
+                                   string $description = null,
+                                   string $callback = null): string
+    {
+        return $this->request(new Sender($addSender,
+            $description,
+            $callback));
+    }
+
+    /**
+     * @param string $addTemplate Текст шаблона
+     * @param string $callback Адрес для уведомления о результате проверки
+     * @return string Результат web-запроса
+     */
+    public function registerTemplate(string $addTemplate,
+                                     string $callback): string
+    {
+        return $this->request(new Template($addTemplate, $callback));
+    }
+
+    /**
+     * @param Task $task Задача / Запрос
+     * @return string Результат web-запроса
+     */
+    public function request(Task $task): string
+    {
+        $task->addParam($this->task);
+
+        return $this->send($task->getUrl(), $task->getParam());
     }
 }

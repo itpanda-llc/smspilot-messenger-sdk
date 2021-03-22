@@ -1,26 +1,22 @@
 {
-    "name": "itpanda-llc/smspilot-messenger-php-sdk",
-    "description": "Library for integration with the SMSPilot messaging service",
-    "type": "library",
-    "keywords": [
-        "panda", "smspilot"
-    ],
+    "name": "itpanda-llc/smspilot-messenger-sdk",
+    "description": "Library for integration with the SMSPILOT.RU messaging service",
     "homepage": "https://github.com/itpanda-llc/smspilot-messenger-php-sdk",
     "license": "MIT",
     "authors": [
         {
             "name": "itpanda-llc",
-            "homepage": "https://github.com/itpanda-llc",
-            "role": "developer"
+            "homepage": "https://github.com/itpanda-llc"
         }
     ],
+    "require": {
+        "php": ">=7.2",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
     "autoload": {
         "psr-4": {
-            "Panda\\SMSPilot\\MessengerSDK\\": "src"
+            "Panda\\SmsPilot\\MessengerSdk\\": "src/"
         }
-    },
-    "require": {
-        "ext-json": "*",
-        "ext-curl": "*"
     }
 }

@@ -1,644 +1,630 @@
 # SMSPilot-Messenger-PHP-SDK
 
-Библиотека для интеграции, реализующая в полном объеме все возможности API сервиса рассылки сообщений ["SMSPilot"](https://smspilot.ru)
+Библиотека для интеграции с сервисом рассылки сообщений ["SMSPILOT.RU"](https://smspilot.ru)
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/itpanda-llc/smspilot-messenger-sdk)](https://packagist.org/packages/itpanda-llc/smspilot-messenger-sdk/stats)
+![Packagist License](https://img.shields.io/packagist/l/itpanda-llc/smspilot-messenger-sdk)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/itpanda-llc/smspilot-messenger-sdk)
 
 ## Ссылки
 
 * [Разработка](https://github.com/itpanda-llc)
-* [О проекте](https://smspilot.ru)
-* [Документация](https://smspilot.ru/apikey.php)
+* [О проекте (SMSPILOT.RU)](https://smspilot.ru)
+* [Документация (API SMSPILOT.RU)](https://smspilot.ru/apikey.php)
+* [Документация (SMSPILOT.RU API-1 v1.9.19)](https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf)
+* [Документация (SMSPILOT.RU API v2.4.16 HTTP/XML/JSON)](https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf)
 
 ## Возможности
 
-* Получение информации об аккаунте и состоянии лицевого счета
-* Получение информации о входящих сообщениях
-* Формирование и отправка заявок на регистрацию имен отправителя
-* Формирование и отправка анти-спам-шаблонов на проверку
-* Создание и формирование параметров отправки сообщений, рассылок (массового сообщения) и пакетов (персональных массовых сообщений)
-* Осуществление отправки сообщений, рассылок (СМС, Viber, гибридных (Viber, СМС) и голосовых сообщений)
-* Осуществление отправки Ping-сообщений и HLR-запросов
-* Получение статуса отправленных сообщений
+* Отправка SMS (HTTP/API-1, HTTP/API-2)
+* Проверка статусов SMS (HTTP/API-2)
+* Баланс (HTTP/API-1)
+* Информация о пользователе (HTTP/API-1)
+* Входящие SMS (HTTP/API-1)
+* HLR-запросы и PING-сообщения (HTTP/API-1, HTTP/API-2)
+* Голосовые сообщения (HTTP/API-1, HTTP/API-2)
+* 2WAY - SMS на которые можно ответить (HTTP/API-1, HTTP/API-2)
+* Управления именами и шаблонами (HTTP/API-1)
 
 ## Требования
 
 * PHP >= 7.2
-* JSON
 * cURL
+* JSON
 
 ## Установка
 
 ```shell script
-php composer.phar require "itpanda-llc/smspilot-messenger-php-sdk"
+composer require itpanda-llc/smspilot-messenger-sdk
 ```
 
-или
-
-```shell script
-clone https://github.com/itpanda-llc/smspilot-messenger-php-sdk
-```
-
-## Примеры пользования
-
-Подключение
+## Подключение
 
 ```php
 require_once 'vendor/autoload.php';
 ```
 
-или
+## Использование
+
+### Создание сервиса / Аутентификация
 
 ```php
-require_once 'smspilot-messenger-php-sdk/autoload.php';
+use Panda\SmsPilot\MessengerSdk;
+
+// API-ключ
+$pilot = new MessengerSdk\Pilot('apikey');
+
+// или
+
+/*
+ * Логин
+ * Пароль
+ */
+$pilot = new MessengerSdk\Pilot('login', 'password');
 ```
 
-Импорт
+### Установка параметров
 
 ```php
-use Panda\SMSPilot\MessengerSDK\Pilot;
-use Panda\SMSPilot\MessengerSDK\Singleton;
-use Panda\SMSPilot\MessengerSDK\Massive;
-use Panda\SMSPilot\MessengerSDK\Packet;
-use Panda\SMSPilot\MessengerSDK\Status;
-use Panda\SMSPilot\MessengerSDK\Inbound;
-use Panda\SMSPilot\MessengerSDK\Sender;
-use Panda\SMSPilot\MessengerSDK\Template;
-use Panda\SMSPilot\MessengerSDK\Account;
-use Panda\SMSPilot\MessengerSDK\Balance;
-use Panda\SMSPilot\MessengerSDK\Callback;
-use Panda\SMSPilot\MessengerSDK\Charset;
-use Panda\SMSPilot\MessengerSDK\Cost;
-use Panda\SMSPilot\MessengerSDK\Debug;
-use Panda\SMSPilot\MessengerSDK\Format;
-use Panda\SMSPilot\MessengerSDK\Method;
-use Panda\SMSPilot\MessengerSDK\Name;
-use Panda\SMSPilot\MessengerSDK\Range;
-use Panda\SMSPilot\MessengerSDK\Ref;
-use Panda\SMSPilot\MessengerSDK\Test;
-use Panda\SMSPilot\MessengerSDK\Text;
-use Panda\SMSPilot\MessengerSDK\Time;
-use Panda\SMSPilot\MessengerSDK\TTL;
-use Panda\SMSPilot\MessengerSDK\Exception\ClientException;
+// Адрес электронной почты (Отладка HTTP-запросов)
+$pilot->setDebug('info@smspilot.ru')
+
+    // Реферер
+    ->setR('r');
 ```
 
-### Создание сервиса и аутентификация
+### Отправка SMS (Одиночное сообщение) (HTTP/API-1)
+
+Способ №1
+
+* Создание запроса
 
 ```php
-// Обязательный параметр: "API-ключ"
-$pilot = new Pilot('R640RLM8D05G018IF8ACC56BBR0FHYDTYURA92Q45KKF90JWR0HQVXM7OW6FA9LZ');
+use Panda\SmsPilot\MessengerSdk;
+
+/*
+ * Текст сообщения
+ * Номер мобильного телефона, или список номеров через запятую
+ * Зарегистрированный отправитель
+ */
+$singleton = new MessengerSdk\Singleton('Все начинается с сообщения!', '79995550011', MessengerSdk\Sender::VIBER);
 ```
 
-### Варианты удобного пользования
+* Установка параметров
 
 ```php
-try {
-    // Получение информации об аккаунте
-    print_r($pilot->getAccount());
-    
-    // Получение информации о балансе аккаунта в примерном количестве смс-сообщений
-    print_r($pilot->getBalance(Balance::SMS));
-    
-    // Регистрация имени отправителя
-    print_r($pilot->getSender('NEWPROJECT', 'info@smspilot.ru', 'Сайт: https://smspilot.ru; Деятельность: Телематические услуги связи...'));
+use Panda\SmsPilot\MessengerSdk;
 
-    // Получение информации о входящих сообщениях за последний день
-    print_r($pilot->getInbound(Range::day(1)));
-    
-    // Получение информации о новых входящих сообщения
-    print_r($pilot->getInbound(Range::NEW));
-    
-    // Отправление одиночного сообщения
-    print_r($pilot->newSingleton('Начинаем!', '79995550011', 'SMSPILOT'));
-    
-    // Отправление одиночного гибриднго (Viber, СМС) сообщения c задержкой отправки 2 часа
-    print_r($pilot->newSingleton('Полетели со мной?!', '79995550011', Name::VIBERSMS, Delay::hour(2)));
+// Текст сообщения
+$singleton->setSend('DEVELOPER')
 
-    // Получение информации о статусе сообщения (по номеру сообщения)
-    print_r($pilot->getStatus('23654545'));
+    // Номер мобильного телефона, или список номеров через запятую
+    ->setTo('79995550011')
 
-    // Регистрация анти-спам-шаблона
-    print_r($pilot->newTemplate('Ваш заказ №____ скучает по вам.', 'http://smspilot.ru/api.php'));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
+    // Зарегистрированный отправитель
+    ->setFrom(MessengerSdk\Sender::GOLOS)
 
-// Отправление массового голосового сообщения с задержкой 15 мин c получением ответа в JSON-формате
-$massive = new Massive('Скоро весна!', Name::GOLOS);
+    // Формат ответа сервера
+    ->setFormat(MessengerSdk\Format::JSON)
 
-$massive->setTime(Delay::min(15))
-    ->addParam(Format::get(Format::JSON))
-    ->addRecipient('79995550011');
+    // Кодировка ответа и запроса
+    ->setCharset(MessengerSdk\Charset::WINDOWS_1251)
 
-try {
-    print_r($pilot->request($massive));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
+    // Язык возвращаемых ошибок
+    ->setLang(MessengerSdk\Lang::RU)
 
-// Определение стоимости отправления массовых персональных сообщений
-$packet = new Packet('DEVELOPER');
+    // Время отправки
+    ->setSendDatetime('2015-04-07 09:10:00')
 
-$packet->addParam(Cost::get(Cost::TRUE))
-    ->addMessage('Вы летите?', '79995550011')
-    ->addMessage('Ваш друг уже с нами!', '79995550012');
+    // Время жизни сообщения
+    ->setTtl(1440)
 
-try {
-    print_r($pilot->request($packet));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
+    // Список возвращаемых атрибутов SMS через запятую
+    ->setFields(MessengerSdk\Fields::ALL)
 
-// Получение инормации о статусе сообщений (по номерам сообщений)
-$status = new Status;
+    // Обычная отправка / Рассчитать стоимость
+    ->setCost(MessengerSdk\Cost::YES)
 
-$status->addMessage('23654545')
-    ->addMessage('23654559')
-    ->addMessage('23654665');
+    // Обычная отправка / Без передачи оператору (эмулятор)
+    ->setTest(MessengerSdk\Test::YES)
 
-try {
-    print_r($pilot->request($status));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
+    // URL адрес скрипта для асинхронного приёма статуса
+    ->setCallback('https://smspilot.ru')
 
-// Получение инормации о статусе сообщений (по номеру пакета)
-$status = new Status;
-
-$status->addPacket('23654545');
-
-try {
-    print_r($pilot->request($status));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
+    // Post или get
+    ->setCallbackMethod(MessengerSdk\CallbackMethod::POST);
 ```
 
-### Получение информации об аккаунте (HTTP API v1)
+* Выполнение запроса
 
 ```php
-try {
-    /*
-     * Способ №1 (Удобный)
-     * Необязательный параметр: "Формат ответа"
-     * Возможно использование функционала класса "Format" в качестве параметра
-     */
-    print_r($pilot->getAccount(Format::XML));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-
-/*
- * Способ №2 (Продвинутый) (создание посылки и формирование параметров)
- * Необязательный параметр: "Формат ответа"
- * Возможно использование функционала класса "Format" в качестве параметра
- */
-$account = new Account(Format::TEXT);
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Формат ответа"
-$account->addParam(Format::get(Format::JSON))
-
-    // ...Указание параметра "Отладка HTTP-запросов"
-    ->addParam(Debug::get('info@smspilot.ru'));
+use Panda\SmsPilot\MessengerSdk;
 
 try {
-    /*
-     * Отправка посылки
-     * Обязательный параметр: "Посылка"
-     */
-    print_r($pilot->request($account));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-```
-
-### Получение информации о балансе аккаунта (HTTP API v1)
-
-```php
-try {
-    /*
-     * Способ №1 (Удобный)
-     * Необязательные параметры: "Единица измерения", "Формат ответа"
-     * Возможно использование функционала классов "Balance", "Format" в качестве параметров
-     */
-    print_r($pilot->getBalance(Balance::RUR, Format::JSON));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-
-/*
- * Способ №2 (Продвинутый) (создание посылки и формирование параметров)
- * Необязательные параметры: "Единица измерения", "Формат ответа"
- * Возможно использование функционала классов "Balance", "Format" в качестве параметров
- */
-$balance = new Balance(Balance::SMS, Format::TEXT);
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Единица измерения баланса аккаунта"
-$balance->addParam(Balance::get(Balance::RUR))
-
-    // ...Указание параметра "Формат ответа"
-    ->addParam(Format::get(Format::XML));
-
-try {
-    /*
-     * Отправка посылки
-     * Обязательный параметр: "Посылка"
-     */
-    print_r($pilot->request($balance));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-```
-
-### Получение информации о входящих сообщениях (HTTP API v2)
-
-```php
-/*
- * Не указывая параметр "Временная отметка",
- * возможно получение информации о сообщениях за все время
- */
-
-try {
-    /*
-     * Способ №1 (Удобный)
-     * Необязательный параметр: "Временная отметка"
-     * Возможно использование функционала класса "Range" в качестве параметра
-     */
-    print_r($pilot->getInbound(Range::day(2)));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-
-/*
- * Способ №2 (Продвинутый) (создание посылки и формирование параметров)
- * Необязательный параметр: "Временная отметка"
- * Возможно использование функционала класса "Range" в качестве параметра
- */
-$inbound = new Inbound(Range::NEW);
-
-try {
-    /*
-     * Отправка посылки
-     * Обязательный параметр: "Посылка"
-     */
-    print_r($pilot->request($inbound));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-```
-
-### Регистрация имен отправителя (HTTP API v1)
-
-```php
-try {
-    /*
-     * Способ №1 (Удобный)
-     * Обязательный параметр: "Имя отправителя"
-     * Необязательные параметры: "Адрес для получения результата", "Описание проекта"
-     */
-    print_r($pilot->getSender('NEWPROJECT', 'info@smspilot.ru', 'Сайт: https://smspilot.ru; Деятельность: Телематические услуги связи...'));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-
-/*
- * Способ №2 (Продвинутый) (создание посылки и формирование параметров)
- * Обязательный параметр: "Имя отправителя"
- * Необязательные параметры: "Адрес для получения результата", "Описание проекта"
- */
-$sender = new Sender('NEWPROJECT', 'info@smspilot.ru', 'Сайт: https://smspilot.ru; Деятельность: Телематические услуги связи...');
-
-/*
- * Указание описания проекта
- * Обязательный параметр: "Описание проекта"
- */
-$sender->setDescription('Сайт: https://smspilot.ru; Деятельность: Рассылка СМС сообщений...');
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Формат ответа"
-$sender->addParam(Format::get(Format::XML));
-
-try {
-    /*
-     * Отправка посылки
-     * Обязательный параметр: "Посылка"
-     */
-    print_r($pilot->request($sender));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-```
-
-### Отправление анти-спам-шаблонов на проверку (HTTP API v1)
-
-```php
-try {
-    /*
-     * Способ №1 (Удобный)
-     * Обязательный параметр: "Текст шаблона"
-     * Необязательный параметр: "Адрес для получения результата"
-     */
-    print_r($pilot->newTemplate('Код подтверждения: ________', 'http://smspilot.ru/api.php'));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-
-/*
- * Способ №2 (Продвинутый) (создание посылки и формирование параметров)
- * Обязательный параметр: "Текст шаблона"
- * Необязательный параметр: "Адрес для получения результата"
- */
-$template = new Template('Ваш ребенок покинул(а) школу. Школа №___ Время: ______.', 'http://smspilot.ru/api.php');
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Формат ответа"
-$template->addParam(Format::get(Format::JSON));
-
-try {
-    /*
-     * Отправка посылки
-     * Обязательный параметр: "Посылка"
-     */
-    print_r($pilot->request($template));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-```
-
-### Отправка одиночного сообщения (HTTP API v1) (СМС, Viber, Гибриднные (Viber, СМС) и голосовые сообщения)
-
-Создание посылки
-
-```php
-/*
- * Для использования Viber, гибридных (Viber, СМС) и голосовых сообщений,
- * а также Ping-сообщений и HLR-запросов, воспользуйтесь функционалом классов
- * "Name", "Text" в качестве параметров "Имя отправителя" и "Текст сообщения"
- */
-
-/*
- * Обязательные параметры: "Текст сообщения", "Номер получателя"
- * Необязательные параметры: "Имя отправителя", "Время отправки"
- * Возможно использование функционала классов "Name", "Delay" в качестве параметров
- */
-$singleton = new Singleton('Все начинается с сообщения!', '79995550011', Name::VIBERSMS, Delay::hour(2));
-```
-
-Формирование параметров отправки (необязательно)
-
-```php
-/*
- * Для использования Viber, гибридных (Viber, СМС) и голосовых сообщений,
- * а также Ping-сообщений и HLR-запросов, воспользуйтесь функционалом классов
- * "Name", "Text" в качестве параметров "Имя отправителя" и "Текст сообщения"
- */
-
-/*
- * Указание имени отправителя
- * Обязательный параметр: "Имя отправителя"
- * Возможно использование функционала класса "Name" в качестве параметра
- */
-$singleton->setName('DEVELOPER')
-
-    /*
-     * Указание времени отправки
-     * Обязательный параметр: "Время отправки"
-     * ВВозможно использование функционала класса "Delay" в качестве параметра
-     */
-    ->setTime(Delay::min(1));
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Отладка HTTP-запросов"
-$singleton->addParam(Debug::get('info@smspilot.ru'))
-
-    // ...Указание параметра "Кодировка текста сообщения"
-    ->addParam(Charset::get(Charset::WINDOWS_1251))
-    
-    // ...Указание параметра "Рассчитать стоимость"
-    ->addParam(Cost::get(Cost::TRUE))
-    
-    // ...Указание параметра "Реферер"
-    ->addParam(Ref::get('13000'));
-```
-
-Отправка посылки
-
-```php
-try {
-    // Обязательный параметр: "Посылка"
     print_r($pilot->request($singleton));
-} catch (ClientException $e) {
+} catch (MessengerSdk\Exception\ClientException $e) {
     echo $e->getMessage();
 }
 ```
 
-### Отправка массового сообщения (HTTP API v1) (СМС, Viber, Гибриднные (Viber, СМС) и голосовые сообщения)
-
-Создание посылки
+Способ №2
 
 ```php
-/*
- * Для использования Viber, гибридных (Viber, СМС) и голосовых сообщений,
- * а также Ping-сообщений и HLR-запросов, воспользуйтесь функционалом классов
- * "Name", "Text" в качестве параметров "Имя отправителя" и "Текст сообщения"
- */
+use Panda\SmsPilot\MessengerSdk;
 
-/*
- * Обязательный параметр: "Текст сообщения"
- * Необязательные параметры: "Имя отправителя", "Время отправки"
- * Возможно использование функционала классов "Name", "Delay" в качестве параметров
- */
-$massive = new Massive('СМСПилот - лучшее решение для СМС-рассылок!', Name::VIBER, Delay::hour(1));
+try {
+    /*
+     * Текст сообщения
+     * Номер мобильного телефона, или список номеров через запятую
+     * Зарегистрированный отправитель
+     */
+    print_r($pilot->sendSingleton('Все начинается с сообщения!','79995550011', MessengerSdk\Sender::VIBER));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
 ```
 
-Формирование параметров отправки (необязательно)
+### Отправка SMS (Пакетная отправка) (HTTP/API-2)
+
+Способ №1
+
+* Создание запроса
 
 ```php
+use Panda\SmsPilot\MessengerSdk;
+
 /*
- * Для использования Viber, гибридных (Viber, СМС) и голосовых сообщений,
- * а также Ping-сообщений и HLR-запросов, воспользуйтесь функционалом классов
- * "Name", "Text" в качестве параметров "Имя отправителя" и "Текст сообщения"
+ * Текст сообщения
+ * Телефонный номер абонента
+ * Имя отправителя
+ */
+$packet = new MessengerSdk\Packet('Все начинается с сообщения!', '79995550011', MessengerSdk\Sender::VIBER);
+```
+
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+/*
+ * Вызов методов "setFrom", "setDatetime", "setCallback", "setCallbackMethod", "setTtl"
+ * сразу после создания экземпляра класса позволит использовать соответствующие параметры
+ * по умолчанию для всех сообщений в пакете
  */
 
 /*
- * Указание имени отправителя
- * Обязательный параметр: "Имя отправителя"
- * Возможно использование функционала классов "Name" в качестве параметра
+ * Текст сообщения
+ * Телефонный номер абонента
+ * Имя отправителя
  */
-$massive->setName(Name::GOLOS)
-
-    /*
-     * Указание времени отправки
-     * Обязательный параметр: "Время отправки"
-     * Возможно использование функционала классов "Delay" в качестве параметра
-     */
-    ->setTime(Delay::min(1));
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Адрес для асинхронного приема статуса"
-$massive->addParam(Callback::get('http://smspilot.ru/api.php'))
-
-    // ...Указание параметра "Метод для асинхронного приема статуса"
-    ->addParam(Method::get(Method::POST))
+$packet->addSend('Все начинается с сообщения!', '79995550011', MessengerSdk\Sender::VIBERSMS)
+    ->addSend('Уже началось!', '79995550012', MessengerSdk\Sender::VIBERSMS)
     
-    // ...Указание параметра "Отправка без передачи оператору"
-    ->addParam(Test::get(Test::TRUE));
+    // Уникальный код сообщения в вашей системе
+    ->setId('id')
+
+    // Имя отправителя
+    ->setFrom(MessengerSdk\Sender::GOLOS)
+
+    // Время отложенной отправки сообщения
+    ->setSendDatetime('2015-04-07 09:10:00')
+
+    // URL адрес скрипта для приѐма статуса
+    ->setCallback('https://smspilot.ru')
+
+    // get или post вызов скрипта приёма статусов
+    ->setCallbackMethod(MessengerSdk\CallbackMethod::POST)
+
+    // Время жизни сообщения
+    ->setTtl(1440)
+
+    // Обычная отправка / Без передачи оператору (эмулятор)
+    ->setTest(MessengerSdk\Test::YES)
+
+    // Обычная отправка / Рассчитать стоимость
+    ->setCost(MessengerSdk\Cost::YES);
 ```
 
-Добавление номеров получателей
+* Выполнение запроса
 
 ```php
-// Обязательный параметр: "Номер получателя"
-$massive->addRecipient('79995550011')
-    ->addRecipient('79995550012');
-```
+use Panda\SmsPilot\MessengerSdk;
 
-Отправка посылки
-
-```php
 try {
-    // Обязательный параметр: "Посылка"
-    print_r($pilot->request($massive));
-} catch (ClientException $e) {
-    echo $e->getMessage();
-}
-```
-
-### Отправка массовых персональных сообщений (СМС-сообщения, пакетная отправка) (HTTP API v2)
-
-Создание посылки
-
-```php
-/*
- * Необязательные параметры: "Имя отправителя", "Время отправки"
- * Возможно использование функционала класса "Delay" в качестве параметра
- */
-$packet = new Packet('DEVELOPER', Delay::min(20));
-```
-
-Формирование параметров отправки (необязательно)
-
-```php
-/*
- * Указание имени отправителя
- * Обязательный параметр: "Имя отправителя"
- */
-$packet->setName('SMSPILOT')
-
-    /*
-     * Указание времени отправки
-     * Обязательный параметр: "Время отправки"
-     * Возможно использование функционала класса "Delay" в качестве параметра
-     */
-    ->setTime(Delay::min(5));
-
-/*
- * Дополнительно, возможно указание других параметров,
- * согласно документации, используя метод "addParam(array $param)".
- * Например,
- */
-
-// ...Указание параметра "Рассчитать стоимость"
-$packet->addParam(Cost::get(Cost::TRUE))
-
-    // ...Указание параметра "Отправка без передачи оператору"
-    ->addParam(Test::get(Test::TRUE));
-```
-
-Добавление сообщений в пакет
-
-```php
-/*
- * Обязательные параметры: "Текст сообщения", "Номер получателя"
- * Необязательные параметры: "Имя отправителя", "Время отправки"
- * Возможно использование функционала класса "Delay" в качестве параметра
- */
-$packet->addMessage('Уже началось!', '79995550011', 'DEVELOPER', Delay::min(5))
-    ->addMessage('..и никогда не закончится!', '79995550012', 'SMSPILOT', Delay::min(7));
-```
-
-Отправка посылки
-
-```php
-try {
-    // Обязательный параметр: "Посылка"
     print_r($pilot->request($packet));
-} catch (ClientException $e) {
+} catch (MessengerSdk\Exception\ClientException $e) {
     echo $e->getMessage();
 }
 ```
 
-### Получение статуса сообщений (HTTP API v2)
+Способ №2
 
 ```php
+use Panda\SmsPilot\MessengerSdk;
+
 try {
     /*
-     * Способ №1 (Удобный)
-     * Необязательный параметр: "Номер сообщения"
+     * Текст сообщения
+     * Номер мобильного телефона, или список номеров через запятую
+     * Зарегистрированный отправитель
      */
-    print_r($pilot->getStatus('23654545'));
-} catch (ClientException $e) {
+    print_r($pilot->sendPacket('Все начинается с сообщения!', '79995550011', MessengerSdk\Sender::VIBER));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+### Проверка статусов SMS (HTTP/API-2)
+
+Способ №1
+
+* Создание запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Код сообщения
+$status = new MessengerSdk\Status('id');
+```
+
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Код сообщения
+$status->addId('id')
+    ->addId('id')
+
+    // Код пакета
+    ->setPacketId('packetId');
+```
+
+* Выполнение запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->request($status));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+Способ №2
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    // Код сообщения
+    print_r($pilot->getStatusById('id'));
+} catch (MessengerSdk\Exception\ClientException $e) {
     echo $e->getMessage();
 }
 
-/*
- * Способ №2 (Продвинутый) (создание посылки и формирование параметров)
- * Необязательный параметр: "Номер сообщения"
- */
-$status = new Status('23654545');
+// или
+
+try {
+    // Код пакета
+    print_r($pilot->getStatusByPacketId('packetId'));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+### Баланс (HTTP/API-1)
+
+Способ №1
+
+* Создание запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Единица измерения
+$balance = new MessengerSdk\Balance(MessengerSdk\Balance::SMS);
+
+// или
+
+// Единица измерения
+$balance = new MessengerSdk\Account(MessengerSdk\Balance::SMS);
+```
+
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Единица измерения
+$balance->setBalance(MessengerSdk\Balance::RUR)
+
+    // Формат ответа сервера
+    ->setFormat(MessengerSdk\Format::JSON)
+
+    // Кодировка ответа и запроса
+    ->setCharset(MessengerSdk\Charset::WINDOWS_1251)
+
+    // Язык возвращаемых ошибок
+    ->setLang(MessengerSdk\Lang::RU);
+```
+
+* Выполнение запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->request($balance));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+Способ №2
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    // Единица измерения
+    print_r($pilot->getBalance(MessengerSdk\Balance::RUR));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+### Информация о пользователе (HTTP/API-1)
+
+Способ №1
+
+* Создание запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Единица измерения
+$account = new MessengerSdk\Account(MessengerSdk\Balance::SMS);
+```
+
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Единица измерения
+$account->setBalance(MessengerSdk\Balance::RUR)
+
+    // Формат ответа сервера
+    ->setFormat(MessengerSdk\Format::JSON)
+
+    // Кодировка ответа и запроса
+    ->setCharset(MessengerSdk\Charset::WINDOWS_1251)
+
+    // Язык возвращаемых ошибок
+    ->setLang(MessengerSdk\Lang::RU);
+```
+
+* Выполнение запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->request($account));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+Способ №2
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    // Единица измерения
+    print_r($pilot->getAccount(MessengerSdk\Balance::RUR));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+### Входящие SMS (HTTP/API-1)
+
+Способ №1
+
+* Создание запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Дата/время с которого начинается выборка
+$inbound = new MessengerSdk\Inbound(MessengerSdk\Inbound::ALL);
+```
+
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Дата/время с которого начинается выборка
+$inbound->setInbound('2010-06-03 09:45:41')
+
+    // Формат ответа сервера
+    ->setFormat(MessengerSdk\Format::JSON)
+
+    // Кодировка ответа и запроса
+    ->setCharset(MessengerSdk\Charset::WINDOWS_1251)
+
+    // Язык возвращаемых ошибок
+    ->setLang(MessengerSdk\Lang::RU);
+```
+
+* Выполнение запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->request($inbound));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+Способ №2
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    // Дата/время с которого начинается выборка
+    print_r($pilot->getInbound(MessengerSdk\Inbound::ALL);
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+### Имена отправителя (HTTP/API-1)
+
+Способ №1
+
+* Создание запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
 
 /*
- * Добавление номеров сообщений
- * Обязательный параметр: "Номер сообщения"
+ * Имя отправителя
+ * Название проекта, адрес сайта, примеры сообщений
+ * Адрес для уведомления о результате проверки
  */
-$status->addMessage('23654545')
-    ->addMessage('23654547');
+$sender = new MessengerSdk\Sender('SMSPilot',
+    'Сайт: https://smspilot.ru; Деятельность: Телематические услуги связи...',
+    'info@smspilot.ru');
+```
 
-/*
- * Добавление номера пакета сообщений
- * Обязательный параметр: "Номер пакета сообщений"
- */
-$status->addPacket('23654545');
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Имя отправителя
+$sender->setAddSender('SMSPilot')
+
+    // Название проекта, адрес сайта, примеры сообщений
+    ->setDescription('Сайт: https://smspilot.ru; Деятельность: Телематические услуги связи...')
+
+    // Адрес для уведомления о результате проверки
+    ->setCallback('info@smspilot.ru')
+
+    // Получить список отправителей
+    ->setList(MessengerSdk\Sender::SENDERS)
+
+    // Формат ответа сервера
+    ->setFormat(MessengerSdk\Format::JSON)
+
+    // Кодировка ответа и запроса
+    ->setCharset(MessengerSdk\Charset::WINDOWS_1251)
+
+    // Язык возвращаемых ошибок
+    ->setLang(MessengerSdk\Lang::RU)
+
+    // Обычная отправка / Без передачи оператору (эмулятор)
+    ->setTest(MessengerSdk\Test::YES);
+```
+
+* Выполнение запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->request($sender));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+Способ №2
+
+```php
+use Panda\SmsPilot\MessengerSdk;
 
 try {
     /*
-     * Отправка посылки
-     * Обязательный параметр: "Посылка"
+     * Имя отправителя
+     * Название проекта, адрес сайта, примеры сообщений
+     * Адрес для уведомления о результате проверки
      */
-    print_r($pilot->request($status));
-} catch (ClientException $e) {
+    print_r($pilot->registerSender('SMSPilot',
+        'Сайт: https://smspilot.ru; Деятельность: Телематические услуги связи...',
+        'info@smspilot.ru');
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+### Анти-спам шаблоны (HTTP/API-1)
+
+Способ №1
+
+* Создание запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+/*
+ * Текст шаблона
+ * Адрес для уведомления о результате проверки
+ */
+$template = new MessengerSdk\Template('Ваш ребенок покинул(а) школу в __:__. Школа №1.',
+    'http://smspilot.ru/api.php');
+```
+
+* Установка параметров
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+// Имя отправителя
+$template->setAddTemplate('Ваш ребенок покинул(а) школу в __:__. Школа №1.')
+
+    // Адрес для уведомления о результате проверки
+    ->setCallback('http://smspilot.ru/api.php')
+
+    // Формат ответа сервера
+    ->setFormat(MessengerSdk\Format::JSON)
+
+    // Кодировка ответа и запроса
+    ->setCharset(MessengerSdk\Charset::WINDOWS_1251)
+
+    // Язык возвращаемых ошибок
+    ->setLang(MessengerSdk\Lang::RU);
+```
+
+* Выполнение запроса
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->request($template));
+} catch (MessengerSdk\Exception\ClientException $e) {
+    echo $e->getMessage();
+}
+```
+
+Способ №2
+
+```php
+use Panda\SmsPilot\MessengerSdk;
+
+try {
+    print_r($pilot->registerTemplate('Код подтверждения: _____', 'http://smspilot.ru/api.php'));
+} catch (MessengerSdk\Exception\ClientException $e) {
     echo $e->getMessage();
 }
 ```

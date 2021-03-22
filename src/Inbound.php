@@ -2,51 +2,110 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Inbound
- * @package Panda\SMSPilot\MessengerSDK
- * Получение информации о входящих сообщениях (HTTP API v2)
+ * @package Panda\SmsPilot\MessengerSdk
+ * Входящие (HTTP/API-1)
  */
-class Inbound extends Check implements Package
+class Inbound extends Task
 {
     /**
-     * Наименование параметра "Временная отметка"
+     * Наименование параметра "inbound"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
-    protected const SINCE = 'since';
+    private const INBOUND = 'inbound';
 
     /**
-     * Наименование параметра "Признак запроса получения входящих сообщений"
+     * Наименование параметра "Формат ответа сервера"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
-    protected const INBOUND = 'inbound';
+    private const FORMAT = 'format';
 
     /**
-     * @var string URL-адрес web-запроса
+     * Наименование параметра "Кодировка запроса и ответа"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
-    public $url = URL::HTTP_V2;
+    private const CHARSET = 'charset';
+
+    /**
+     * Наименование параметра "Язык возвращаемых ошибок"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     */
+    private const LANG = 'lang';
+
+    /**
+     * Возврат всех входящих
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     */
+    public const ALL = 'all';
+
+    /**
+     * Выбрать ещё не прочитанные сообщения
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     */
+    public const NEW = 'new';
 
     /**
      * Inbound constructor.
-     * @param string $range Временная отметка
+     * @param string|null $inbound Дата/время с которого начинается выборка
      */
-    public function __construct(string $range = null)
+    public function __construct(string $inbound = null)
     {
-        $this->package[self::INBOUND] = true;
-
-        if (!is_null($range)) {
-            $this->package[self::SINCE] = $range;
-        }
+        $this->task[self::INBOUND] = $inbound ?? self::NEW;
     }
 
     /**
-     * @return string Параметры посылки
+     * @param string $inbound Дата/время с которого начинается выборка
+     * @return $this
      */
-    public function getParam(): string
+    public function setInbound(string $inbound): self
     {
-        return json_encode($this->package);
+        $this->task[self::INBOUND] = $inbound;
+
+        return $this;
+    }
+
+    /**
+     * @param string $format Формат ответа сервера
+     * @return $this
+     */
+    public function setFormat(string $format): self
+    {
+        $this->task[self::FORMAT] = $format;
+
+        return $this;
+    }
+
+    /**
+     * @param string $charset Кодировка ответа и запроса
+     * @return $this
+     */
+    public function setCharset(string $charset): self
+    {
+        $this->task[self::CHARSET] = $charset;
+
+        return $this;
+    }
+
+    /**
+     * @param string $lang Язык возвращаемых ошибок
+     * @return $this
+     */
+    public function setLang(string $lang): self
+    {
+        $this->task[self::LANG] = $lang;
+
+        return $this;
     }
 }

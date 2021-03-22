@@ -8,25 +8,23 @@
 namespace Panda\SmsPilot\MessengerSdk;
 
 /**
- * Class Charset
+ * Class Method
  * @package Panda\SmsPilot\MessengerSdk
- * Кодировка запроса и ответа
+ * Метод для асинхронного приема статуса
  */
-class Charset
+class CallbackMethod
 {
     /**
-     * UTF-8 (По умолчанию)
+     * GET (По умолчанию)
      * @link https://smspilot.ru/apikey.php
      * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
-     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const UTF_8 = 'utf-8';
+    public const GET = 'get';
 
     /**
-     * Windows-1251
+     * POST
      * @link https://smspilot.ru/apikey.php
      * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
-     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const WINDOWS_1251 = 'windows-1251';
+    public const POST = 'post';
 }

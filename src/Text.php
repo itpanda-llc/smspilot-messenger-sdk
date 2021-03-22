@@ -2,39 +2,31 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Text
- * @package Panda\SMSPilot\MessengerSDK
+ * @package Panda\SmsPilot\MessengerSdk
  * Текст сообщения
  */
-class Text implements Param
+class Text
 {
     /**
-     * Текст для HLR-запроса
+     * HLR
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
     public const HLR = 'HLR';
 
     /**
-     * Текст для PING-сообщения
+     * PING
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
     public const PING = 'PING';
-
-    /**
-     * Наименование параметра
-     */
-    private const PARAM_NAME = 'send';
-
-    /**
-     * @param string $param Значение параметра
-     * @return array Параметр
-     */
-    public static function get(string $param): array
-    {
-        return [self::PARAM_NAME => $param];
-    }
 }

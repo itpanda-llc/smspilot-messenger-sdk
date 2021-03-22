@@ -8,25 +8,23 @@
 namespace Panda\SmsPilot\MessengerSdk;
 
 /**
- * Class Charset
+ * Class Url
  * @package Panda\SmsPilot\MessengerSdk
- * Кодировка запроса и ответа
+ * URL-адреса
  */
-class Charset
+class Url
 {
     /**
-     * UTF-8 (По умолчанию)
+     * HTTP/API-1
      * @link https://smspilot.ru/apikey.php
      * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
-     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const UTF_8 = 'utf-8';
+    public const API = 'http://smspilot.ru/api.php';
 
     /**
-     * Windows-1251
+     * HTTP/API-2
      * @link https://smspilot.ru/apikey.php
-     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const WINDOWS_1251 = 'windows-1251';
+    public const API2 = 'http://smspilot.ru/api2.php';
 }

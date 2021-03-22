@@ -2,44 +2,43 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Format
- * @package Panda\SMSPilot\MessengerSDK
- * Формат ответа
+ * @package Panda\SmsPilot\MessengerSdk
+ * Формат ответа сервера
  */
-class Format implements Param
+class Format
 {
     /**
-     * Текст
+     * Текст (По умолчанию)
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
     public const TEXT = 'text';
 
     /**
-     * XML-формат
+     * XML
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
     public const XML = 'xml';
 
     /**
-     * JSON-формат
+     * JSON
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
     public const JSON = 'json';
 
     /**
-     * Наименование параметра
+     * Код / Статус
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
-    private const PARAM_NAME = 'format';
-
-    /**
-     * @param string $param Значение параметра
-     * @return array Параметр
-     */
-    public static function get(string $param): array
-    {
-        return [self::PARAM_NAME => $param];
-    }
+    public const V = 'v';
 }

@@ -2,69 +2,40 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+declare(strict_types=1);
+
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Balance
- * @package Panda\SMSPilot\MessengerSDK
- * Получение информации о балансе аккаунта (HTTP API v1)
+ * @package Panda\SmsPilot\MessengerSdk
+ * Баланс (HTTP/API-1)
  */
-class Balance extends Check implements Package, Param
+class Balance extends Account
 {
     /**
-     * Рубль
+     * Вернуть баланс в рублях
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
     public const RUR = 'rur';
 
     /**
-     * Примерное количество СМС-сообщений
+     * Вернуть примерное кол-во оставшихся смс
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
     public const SMS = 'sms';
 
     /**
-     * Наименование параметра "Единица измерения"
-     */
-    private const PARAM_NAME = 'balance';
-
-    /**
-     * Наименование параметра "Формат ответа"
-     */
-    private const FORMAT = 'format';
-
-    /**
-     * @var string URL-адрес web-запроса
-     */
-    public $url = URL::HTTP_V1;
-
-    /**
      * Balance constructor.
      * @param string|null $balance Единица измерения
-     * @param string|null $format Формат ответа
      */
-    public function __construct(string $balance = null,
-                                string $format = null)
+    public function __construct(string $balance = null)
     {
-        $this->package[self::PARAM_NAME] = $balance ?? self::RUR;
-        $this->package[self::FORMAT] = $format;
-    }
-
-    /**
-     * @return string Параметры посылки
-     */
-    public function getParam(): string
-    {
-        return http_build_query($this->package);
-    }
-
-    /**
-     * @param string $param Значение параметра
-     * @return array Параметр
-     */
-    public static function get(string $param): array
-    {
-        return [self::PARAM_NAME => $param];
+        parent::__construct($balance ?? self::RUR);
     }
 }

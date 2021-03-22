@@ -2,39 +2,31 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Cost
- * @package Panda\SMSPilot\MessengerSDK
- * Расчет стоимости
+ * @package Panda\SmsPilot\MessengerSdk
+ * Обычная отправка / Рассчитать стоимость
  */
-class Cost implements Param
+class Cost
 {
     /**
-     * Расчет стоимости
+     * Обычная отправка (По умолчанию)
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const TRUE = '1';
+    public const NO = '0';
 
     /**
-     * Обычная отправка
+     * Рассчитать стоимость (Не отправлять)
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v2.4.16.pdf
      */
-    public const FALSE = '0';
-
-    /**
-     * Наименование параметра
-     */
-    private const PARAM_NAME = 'cost';
-
-    /**
-     * @param string $param Значение параметра
-     * @return array Параметр
-     */
-    public static function get(string $param): array
-    {
-        return [self::PARAM_NAME => $param];
-    }
+    public const YES = '1';
 }

@@ -2,42 +2,96 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Account
- * @package Panda\SMSPilot\MessengerSDK
- * Получение информации об аккаунте (HTTP API v1)
+ * @package Panda\SmsPilot\MessengerSdk
+ * Информация о пользователе (HTTP/API-1)
  */
-class Account extends Check implements Package
+class Account extends Task
 {
     /**
-     * Наименование параметра "Формат ответа"
+     * Наименование параметра "Единица измерения"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
-    private const FORMAT = 'format';
+    protected const BALANCE = 'balance';
 
     /**
-     * @var string URL-адрес web-запроса
+     * Наименование параметра "Формат ответа сервера"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
      */
-    public $url = URL::HTTP_V1;
+    protected const FORMAT = 'format';
+
+    /**
+     * Наименование параметра "Кодировка запроса и ответа"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     */
+    protected const CHARSET = 'charset';
+
+    /**
+     * Наименование параметра "Язык возвращаемых ошибок"
+     * @link https://smspilot.ru/apikey.php
+     * @link https://smspilot.ru/download/SMSPilotRu-HTTP-v1.9.19.pdf
+     */
+    protected const LANG = 'lang';
 
     /**
      * Account constructor.
-     * @param string|null $format Формат ответа
+     * @param string|null $balance Единица измерения
      */
-    public function __construct(string $format = null)
+    public function __construct(string $balance = null)
     {
-        $this->package[self::FORMAT] = $format;
+        $this->task[self::BALANCE] = $balance;
     }
 
     /**
-     * @return string Параметры посылки
+     * @param string $balance Единица измерения
+     * @return $this
      */
-    public function getParam(): string
+    public function setBalance(string $balance): self
     {
-        return http_build_query($this->package);
+        $this->task[self::BALANCE] = $balance;
+
+        return $this;
+    }
+
+    /**
+     * @param string $format Формат ответа сервера
+     * @return $this
+     */
+    public function setFormat(string $format): self
+    {
+        $this->task[self::FORMAT] = $format;
+
+        return $this;
+    }
+
+    /**
+     * @param string $charset Кодировка ответа и запроса
+     * @return $this
+     */
+    public function setCharset(string $charset): self
+    {
+        $this->task[self::CHARSET] = $charset;
+
+        return $this;
+    }
+
+    /**
+     * @param string $lang Язык возвращаемых ошибок
+     * @return $this
+     */
+    public function setLang(string $lang): self
+    {
+        $this->task[self::LANG] = $lang;
+
+        return $this;
     }
 }

@@ -2,16 +2,16 @@
 
 /**
  * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc
+ * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
  */
 
-namespace Panda\SMSPilot\MessengerSDK;
+declare(strict_types=1);
 
-use Panda\SMSPilot\MessengerSDK\Exception\ClientException;
+namespace Panda\SmsPilot\MessengerSdk;
 
 /**
  * Class Request
- * @package Panda\SMSPilot\MessengerSDK
+ * @package Panda\SmsPilot\MessengerSdk
  * Web-запрос
  */
 class Request
@@ -27,10 +27,12 @@ class Request
 
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
         if (($response = curl_exec($ch)) === false)
-            throw new ClientException(curl_error($ch));
+            throw new Exception\ClientException(curl_error($ch));
 
         curl_close($ch);
 
