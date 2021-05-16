@@ -1,4 +1,4 @@
-# SMSPilot-Messenger-PHP-SDK
+# SMSPilot-Messenger-SDK
 
 Библиотека для интеграции с сервисом рассылки сообщений ["SMSPILOT.RU"](https://smspilot.ru)
 

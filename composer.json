@@ -1,7 +1,7 @@
 {
     "name": "itpanda-llc/smspilot-messenger-sdk",
     "description": "Library for integration with the SMSPILOT.RU messaging service",
-    "homepage": "https://github.com/itpanda-llc/smspilot-messenger-php-sdk",
+    "homepage": "https://github.com/itpanda-llc/smspilot-messenger-sdk",
     "license": "MIT",
     "authors": [
         {

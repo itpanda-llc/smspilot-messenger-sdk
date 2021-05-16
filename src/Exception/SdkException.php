@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Файл из репозитория SMSPilot-Messenger-PHP-SDK
- * @link https://github.com/itpanda-llc/smspilot-messenger-php-sdk
+ * Файл из репозитория SMSPilot-Messenger-SDK
+ * @link https://github.com/itpanda-llc/smspilot-messenger-sdk
  */
 
 namespace Panda\SmsPilot\MessengerSdk\Exception;
